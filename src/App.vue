@@ -26,8 +26,11 @@ onMounted(() => {
       <Stats />
     </div>
     <!-- {{ data }} -->
-    {{ store.count }}
-    <router-view></router-view>
+    <router-view v-slot="{ Component }">
+  <transition name="fade" mode="out-in">
+    <component :is="Component"/>
+  </transition>
+</router-view>
     <footer>
       <Navbar />
     </footer>
@@ -50,6 +53,24 @@ footer{
   padding: 10px;
   display: flex;
   justify-content: space-between;
+}
+
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity .5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  transition: .5s;
+  opacity: 0;
+}
+
+.fade-enter-to,
+.fade-leave-from {
+  opacity: 1;
+  transition: 1s;
 }
 
 </style>

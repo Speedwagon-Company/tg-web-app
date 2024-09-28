@@ -4,7 +4,7 @@
         <ul class="nav-list">
             <li class="nav-item"  v-for="(navItem) in navItems" :key="navItem.text" @click="changePage(navItem)">
                 <component :is="navItem.icon"  :fill="color" :fillOpacity="navItem.opacity" />
-                <p>{{ navItem.text }}</p>
+                <p class="nav-item-text">{{ navItem.text }}</p>
             </li>
         </ul>
     </nav>
@@ -85,7 +85,7 @@ function markItem(givenItem: navItemsType){
 
 nav{
     background: #52C3F1;
-    padding: 10px;
+    padding: 5px;
 }
 svg>path {
     transition: all 1s;
@@ -93,8 +93,8 @@ svg>path {
 
 .nav-list{
     display: flex;
-    gap: 20px;
-    justify-content: space-between;
+    /* gap: 20px; */
+    justify-content: space-around;
     align-items: center;
 
 }
@@ -107,11 +107,17 @@ svg>path {
 
 
 li > svg {
-    width: 50px;
+    width: 30px;
+    height: 40px;
 }
 
 li > svg > path{
     width: 100%;
     height: 100%;
+}
+
+.nav-item-text{
+    font-size: 10px;
+    color: white;
 }
 </style>
