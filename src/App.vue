@@ -4,15 +4,18 @@ import { onMounted, ref } from "vue";
 import Navbar from "./components/layout/Navbar.vue";
 import Stats from "./components/Stats.vue";
 import Character from "./components/Character.vue";
-import { useWebApp } from "vue-tg";
+// import { useWebApp } from "vue-tg";
+import { useCounterStore } from "./stores/counterStore";
 
-const tg = useWebApp();
+const store = useCounterStore()
+// const tg = useWebApp();
 
-const data = ref(tg.initDataUnsafe.user?.username)
-let second: any
+// const data = ref(tg.initDataUnsafe.user?.username)
+// let second: any
 onMounted(() => {
-  console.log(data)
-  second = JSON.parse(second)
+  store.saveUsername("ahmde")
+
+  // second = JSON.parse(second)
 })
 </script>
 
@@ -22,7 +25,8 @@ onMounted(() => {
       <Character />
       <Stats />
     </div>
-    {{ data }}
+    <!-- {{ data }} -->
+    {{ store.count }}
     <router-view></router-view>
     <footer>
       <Navbar />

@@ -1,0 +1,22 @@
+{
+    "initData": "user=%7B%22id%22%3A1407232708%2C%22first_name%22%3A%22Just%22%2C%22last_name%22%3A%22Felix%22%2C%22username%22%3A%22DrainEjnoyer%22%2C%22language_code%22%3A%22ru%22%2C%22allows_write_to_pm%22%3Atrue%7D&chat_instance=5465511586625090463&chat_type=sender&auth_date=1727114123&hash=3b5ae03623587dc4b79e76da642ce71092637326a2cae67154d5e7c32de8f57a",
+    "initDataUnsafe": {
+        "user": {
+            "id": 1407232708,
+            "first_name": "Just",
+            "last_name": "Felix",
+            "username": "DrainEjnoyer",
+            "language_code": "ru",
+            "allows_write_to_pm": true
+        },
+        "chat_instance": "5465511586625090463",
+        "chat_type": "sender",
+        "auth_date": "1727114123",
+        "hash": "3b5ae03623587dc4b79e76da642ce71092637326a2cae67154d5e7c32de8f57a"
+    },
+    "version": "7.10",
+    "platform": "tdesktop",
+    "isReady": false,
+    "isPlatformUnknown": false,
+    "canSendData": false
+}
