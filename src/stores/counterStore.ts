@@ -22,6 +22,23 @@ export const useCounterStore = defineStore('counter', {
 
       },
 
+      async getUser(username: string){
+        let res = null
+
+        await fetch(`${baseUrl}/user/${username}`,
+          {
+            mode:"cors"
+          }
+        ).then((resp) => resp.json())
+        .then((data) => {
+          if(data.user == "nil")
+            return
+          res = data.user
+        })
+
+        return res
+      },
+
       async checkIfUserExists(username: string): Promise<boolean>{
         let users;
         await fetch(baseUrl)
