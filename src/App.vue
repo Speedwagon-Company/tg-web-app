@@ -12,8 +12,12 @@ const tg = useWebApp();
 
 const data = ref(tg.initDataUnsafe.user?.username)
 // let second: any
-onMounted(() => {
+onMounted(async() => {
   localStorage.setItem("username", data.value+"")
+  let user = await store.getUser(data.value+"")
+  if(user){
+    store.user = user
+  }
   // second = JSON.parse(second)
 })
 </script>

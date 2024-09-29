@@ -1,9 +1,9 @@
 import { defineStore } from 'pinia'
-
+import { User } from '../types/user'
 const baseUrl = import.meta.env.VITE_BASE
 
 export const useCounterStore = defineStore('counter', {
-    state: () => ({ count: 0, name: 'Eduardo' }),
+    state: () => ({ count: 0, name: 'Eduardo', user: {} as User }),
     getters: {
       doubleCount: (state) => state.count * 2,
     },
@@ -22,7 +22,7 @@ export const useCounterStore = defineStore('counter', {
 
       },
 
-      async getUser(username: string){
+      async getUser(username: string): Promise<User | null>{
         let res = null
 
         await fetch(`${baseUrl}/user/${username}`,
