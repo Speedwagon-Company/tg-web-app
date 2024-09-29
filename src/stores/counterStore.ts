@@ -11,15 +11,32 @@ export const useCounterStore = defineStore('counter', {
       increment() {
         this.count++
       },
-      async saveUsername(username: string){
-        await fetch(`${baseUrl}`,
+      async postOrGetUser(username: string){
+        const date = new Date();
+
+        let day = date.getDate();
+        let month = date.getMonth() + 1;
+        let year = date.getFullYear();
+        let res
+        const data = {
+          "username": username,
+          "join_date": `${day}-${month}-${year}`,
+          "coins": 0,
+          "health": 100,
+          "exp": 0,
+          "lvl": 1,
+          "role_id": 1,
+          "avatar_url": "none"
+        }
+        await fetch(`${baseUrl}/user`,
           {
             method:"POST",
-            body: JSON.stringify({name:username})
+            body: JSON.stringify(data)
           }
-        )
+        ).then((resp) => resp.json())
+        .then((data) => res = data)
         localStorage.setItem("username", username)
-
+        return res
       },
 
       async getUser(username: string): Promise<User | null>{

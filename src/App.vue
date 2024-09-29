@@ -14,9 +14,11 @@ const data = ref(tg.initDataUnsafe.user?.username)
 // let second: any
 onMounted(async() => {
   localStorage.setItem("username", data.value+"")
-  let user = await store.getUser(data.value+"")
+  let user = await store.postOrGetUser(data.value+"")
   if(user){
     store.user = user
+  }else{
+
   }
   // second = JSON.parse(second)
 })
@@ -29,7 +31,7 @@ onMounted(async() => {
       <Stats />
     </div>
     {{ data }}
-    {{  }}
+    <button @click="store.postOrGetUser('krutoy')">dwa</button>
     <router-view v-slot="{ Component }">
   <transition name="fade" mode="out-in">
     <component :is="Component"/>
