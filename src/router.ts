@@ -3,14 +3,15 @@ import DailyPage from "./pages/DailyPage.vue";
 import AchievementPage from "./pages/AchievementPage.vue";
 import ShopPage from "./pages/ShopPage.vue";
 import LeaderboardPage from "./pages/LeaderboardPage.vue";
-
+import AuthPage from "./pages/AuthPage.vue";
 
 export default createRouter({
     history:createWebHashHistory(),
     routes: [
         {
             path:"/daily",
-            component:DailyPage
+            component:DailyPage,
+
         },
         {
             path:"/achievements",
@@ -23,6 +24,10 @@ export default createRouter({
         {
             path:"/leaderboard",
             component:LeaderboardPage
+        },
+        {
+            path:"/token",
+            component:AuthPage
         }
     ]
 })

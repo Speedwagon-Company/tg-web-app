@@ -54,7 +54,7 @@ const navItems= ref([
     },
     {
         icon:markRaw(AchievementIcon),
-        text:"Достижения",
+        text:"Расписание",
         href:"/achievements",
         active: false,
         opacity:0.5

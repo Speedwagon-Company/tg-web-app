@@ -1,37 +1,35 @@
 <script setup lang="ts">
 // import { Alert } from 'vue-tg';
-import { onMounted, ref } from "vue";
+import { onMounted } from "vue";
 import Navbar from "./components/layout/Navbar.vue";
-import Stats from "./components/Stats.vue";
-import Character from "./components/Character.vue";
-import { useWebApp } from "vue-tg";
-import { useCounterStore } from "./stores/counterStore";
 
-const store = useCounterStore()
-const tg = useWebApp();
+// import { useWebApp } from "vue-tg";
+// import { useCounterStore } from "./stores/counterStore";
+import { useRouter } from "vue-router";
+// import UserInfo from "./components/UserInfo.vue";
+const router = useRouter()
+// const store = useCounterStore()
+// const tg = useWebApp();
 
-const data = ref(tg.initDataUnsafe.user?.username)
+// const data = ref(tg.initDataUnsafe.user?.username)
 // let second: any
 onMounted(async() => {
-  localStorage.setItem("username", data.value+"")
-  let user = await store.postOrGetUser(data.value+"")
-  if(user){
-    store.user = user
-  }else{
 
-  }
+  // localStorage.setItem("username", data.value+"")
+  // let user = await store.postOrGetUser(data.value+"")
+  // if(user){
+  //   store.user = user
+   
+  // }
   // second = JSON.parse(second)
 })
 </script>
 
 <template>
   <div  class="app">
-    <div class="wrapper">
-      <Character />
-      <Stats />
-    </div>
-    {{ data }}
-    <button @click="store.postOrGetUser('krutoy')">dwa</button>
+
+    <button @click="router.push('/token')">страница с токеном</button>
+    <!-- <UserInfo /> -->
     <router-view v-slot="{ Component }">
   <transition name="fade" mode="out-in">
     <component :is="Component"/>

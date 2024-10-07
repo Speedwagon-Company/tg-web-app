@@ -1,5 +1,7 @@
 import { defineStore } from 'pinia'
 import { User } from '../types/user'
+import { ScheduleWeek } from '../assets/types/enums/ScheduleWeek'
+import { WeekDays } from '../assets/types/enums/WeekDays'
 const baseUrl = import.meta.env.VITE_BASE
 
 export const useCounterStore = defineStore('counter', {
@@ -28,10 +30,14 @@ export const useCounterStore = defineStore('counter', {
           "role_id": 1,
           "avatar_url": "none"
         }
-        await fetch(`${baseUrl}/user`,
+        await fetch(`${baseUrl}/users`,
           {
             method:"POST",
-            body: JSON.stringify(data)
+            mode:"cors",
+            body: JSON.stringify(data),
+            headers:{
+              "content-type":"application/json"
+            }
           }
         ).then((resp) => resp.json())
         .then((data) => res = data)
@@ -67,6 +73,47 @@ export const useCounterStore = defineStore('counter', {
 
         return false
 
+      },
+
+      async getScheduleJSON(groupId: number, date: string, scheduleWeek: ScheduleWeek){
+        console.log(`https://lms3.sseu.ru/api/v1/schedule-board/by-group?groupId=${groupId}&scheduleWeek=${scheduleWeek}&date=${date}`)
+        const resp = await fetch(`https://lms3.sseu.ru/api/v1/schedule-board/by-group?groupId=${groupId}&scheduleWeek=${scheduleWeek}&date=${date}`)
+        const data = await resp.json()
+        return data
+      },
+
+      async getNDaySchedule(schedule: any, day: WeekDays){
+        let res: any[] = []
+        if(day == "SUNDAY")
+          return
+
+        schedule.body.forEach((item: any) => {
+          if(item[day][0]["workPlan"]["discipline"] == null) return
+          if(item[day][0]["subject"][0]["name"] == undefined) return
+          
+          const disciplineName = item[day][0]["workPlan"]["discipline"]["name"]
+          let teacherName = item[day][0]["subject"][0]["name"] 
+          const lessonType = item[day][0]["workPlan"]["lessonTypes"]["name"]
+          let audience
+          if(item[day][0]["subject"][0]["audiences"][0])
+            audience = item[day][0]["subject"][0]["audiences"][0]["name"]
+          else
+            audience = "Аудитория не указана"
+
+          if(teacherName == "")
+            teacherName = item[day][0]["subject"][0]["replacementTeachers"][0]["fio"]
+          
+          res.push({teacherName:teacherName,disciplineName:disciplineName, audience:audience,lessonType:lessonType, time:item["name"]})
+        })
+
+        return res
+      },
+
+      getTodayDay(){
+        const now = new Date()
+        const weekDaysArr = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+        const currDay = weekDaysArr[now.getDay()].toUpperCase()
+        return currDay
       }
 
     },

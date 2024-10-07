@@ -1,11 +1,15 @@
 <template>
     <div>
-        <p class="text">В некст апдейте завезу</p>
+        <TodaySchedule />
     </div>
 
 </template>
 
 <script lang="ts" setup>
+import TodaySchedule from '../components/TodaySchedule.vue';
+
+
+
 
 </script>
 

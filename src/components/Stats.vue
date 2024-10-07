@@ -1,12 +1,13 @@
 <template>
     <div>
+        вцфволцфлдвофцдф
         <div class="stat-bars">
-            <StatsBar :progress="user.health+''" color="#FF5F61" :icon="HeartIcon" />
-            <StatsBar :progress="user.exp+''" color="#FEBD5F" :icon="StarFourIcon" />
+            <StatsBar :progress="store.user.health+''" color="#FF5F61" :icon="HeartIcon" />
+            <StatsBar :progress="store.user.exp+''" color="#FEBD5F" :icon="StarFourIcon" />
         </div>
         <div class="coins">
             <CoinIcon fill="#FEBD5F" />
-            <span>{{ user.coins }}</span>
+            <span>{{ store.user.coins }}</span>
         </div>
     </div>
 
@@ -20,7 +21,6 @@ import CoinIcon from './icons/CoinIcon.vue';
 import { useCounterStore } from '../stores/counterStore';
 
 const store = useCounterStore()
-const user = store.user
 </script>
 
 <style scoped>
