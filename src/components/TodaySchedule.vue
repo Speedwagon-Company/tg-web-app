@@ -1,8 +1,13 @@
 <template>
     <div class="shedule">
+        <div class="wrapper">
+            <BaseInput @change="changeData" type="date" v-model="date" />
+            <BaseButton @click="prevDay" >пред. день</BaseButton>
+            <BaseButton @click="nextDay" >след. день</BaseButton>
+        </div>
         <h4>{{ `${todayInfo.todayName} ${todayInfo.day} ${todayInfo.monthName}` }}</h4>
-        <ul class="lesson-list">
-            <li class="lesson-item" v-for="lesson,i in day" :key="i">
+        <TransitionGroup name="list" tag="ul" :class="'lesson-list'" >
+            <li class="lesson-item" v-for="lesson,i in day" :key="i" :class="{'inactive': isLessonInactive(lesson.time, todayInfo.day)}">
                 <div class="lesson-time">
                     <span class="time">{{ lesson.time }}</span>
                     <span class="time">{{ getEndLessonTime(lesson.time) }}</span>
@@ -11,24 +16,90 @@
                 <div class="lesson-main">
                     <h4 class="lesson-name">{{ lesson.disciplineName}} <span class="lesson-type">({{ lesson.lessonType }})</span></h4>
                     <div class="lesson-footer">
-                        <span class="lesson-audience">{{ lesson.audience }}</span>
+                        <span class="lesson-audience">{{ lesson.audience }}
+                            <span class="now" v-show="matchInterval(lesson.time, getEndLessonTime(lesson.time), new Date())">Now</span>
+                        </span>
                         <span>{{ lesson.teacherName }}</span>
                     </div>
                 </div>
             </li>
-        </ul>
+        </TransitionGroup>
     </div>
 
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, reactive, ref } from 'vue';
+import { onMounted, reactive, ref } from 'vue';
 import { useCounterStore } from '../stores/counterStore';
 import { ScheduleWeek } from '../assets/types/enums/ScheduleWeek';
-import { WeekDays } from '../assets/types/enums/WeekDays';
+import BaseInput from './ui/BaseInput.vue';
+import BaseButton from './ui/BaseButton.vue';
+// import { WeekDays } from '../assets/types/enums/WeekDays';
 
 const store = useCounterStore()
 const day = ref();
+const date = ref()
+
+function matchInterval(start: string, end: string, date: Date): boolean{
+    let currDate = new Date().getDate()
+    if(currDate != date.getDate())
+        return false
+
+    let splitedStart = start.split(":")
+    let splitedEnd = end.split(":")
+
+    let startHours = parseInt(splitedStart[0])
+    let startMin = parseInt(splitedStart[1])
+    let endHours = parseInt(splitedEnd[0])
+    let endMin = parseInt(splitedEnd[1])
+    let dateMin = date.getMinutes()
+    let dateHours = date.getHours() 
+
+    let startConverted = (startHours * 60) + startMin
+    let endConverted = (endHours * 60) + endMin
+    let dateConverted = (dateHours * 60) + dateMin
+    return dateConverted >= startConverted && dateConverted <= endConverted
+
+
+}
+
+function nextDay(){
+    let splitedDate = date.value.split("-")
+    let day = parseInt(splitedDate[2])
+    day+=1
+    splitedDate[2] = day.toString()
+    date.value = splitedDate.join("-")
+    console.log(splitedDate)
+    changeData()
+}
+
+
+function prevDay(){
+    let splitedDate = date.value.split("-")
+    let day = parseInt(splitedDate[2])
+    day-=1
+    splitedDate[2] = day.toString()
+    date.value = splitedDate.join("-")
+    console.log(splitedDate)
+    changeData()
+}
+function isLessonInactive(time: string, passedDate: number): boolean{
+    const date = new Date()
+    if(passedDate != date.getDate())
+        return false
+    const dateMin = date.getMinutes()
+    const dateHours = date.getHours()
+
+    const splitedTime = time.split(":")
+    const timeHours = parseInt(splitedTime[0])
+    const timeMin = parseInt(splitedTime[1])
+
+    const dateConverted = (dateHours * 60) + dateMin
+    const timeConverted = (timeHours * 60) + timeMin
+
+    return dateConverted > timeConverted+95
+}
+
 function getEndLessonTime(time: string): string {
     let [hours, minutes] = time.split(':').map(Number);
     const lessonDuration = 95; 
@@ -47,7 +118,7 @@ function getEndLessonTime(time: string): string {
     return `${formattedHours}:${formattedMinutes}`;
 }
 
-function getTodayDay(){
+function getNDayInfo(date: string){
     const daysOfWeek = [
     "Воскресенье",
     "Понедельник",
@@ -58,42 +129,66 @@ function getTodayDay(){
     "Суббота",
     ];
 
-    const today = new Date();
+    const today = new Date(date);
     const dayIndex = today.getDay();
     const monthName = today.toLocaleDateString('ru-RU', { month: 'long' });
     return {dayName:daysOfWeek[dayIndex], day:today.getDate(), monthName:monthName};
 }
 
-function getCurrTime(){
-    const currDate = new Date()
-    const hours = currDate.getHours()
-    const minutes = currDate.getMinutes()
-    return [hours,minutes]
-}
+// function getCurrTime(){
+//     const currDate = new Date()
+//     const hours = currDate.getHours()
+//     const minutes = currDate.getMinutes()
+//     return [hours,minutes]
+// }
 
 
-
+let today: any
+let data = ref("")
 const todayInfo = reactive({todayName:"", day:0, monthName:""})
 onMounted( async() => {
-    const data = await store.getScheduleJSON(504, "2024-10-06", ScheduleWeek.CURRENT)
-    day.value = await store.getNDaySchedule(data, WeekDays.MONDAY)
-    console.log("DWADWA",day)
+    today = store.getNDay(new Date().getDay())
+    date.value = new Date().toISOString().split('T')[0]
+ 
     console.log(getEndLessonTime("8:30"))
-    let todayDay = getTodayDay()
+    let todayDay = getNDayInfo(date.value)
     todayInfo.todayName = todayDay.dayName
     todayInfo.day = todayDay.day
     todayInfo.monthName = todayDay.monthName
-    console.log(getCurrTime())
+    data.value = await store.getScheduleJSON(504, date.value, ScheduleWeek.CURRENT)
+    day.value = await store.getNDaySchedule(data.value, today)
 })
+
+async function changeData(){
+
+    let todayDay = getNDayInfo(date.value)
+    todayInfo.todayName = todayDay.dayName
+    todayInfo.day = todayDay.day
+    todayInfo.monthName = todayDay.monthName
+    console.log(todayDay)
+    day.value = await store.getNDaySchedule(data.value, store.getNDay(new Date(date.value).getDay()))
+    // day.value = ...day.value
+    console.log(day.value)
+}
 </script>
 
 <style scoped>
+.list-enter-active,
+.list-leave-active {
+    transition: all 0.5s ease;
+}
 
+.list-enter-from,
+.list-leave-to {
+    opacity: 0;
+    transform: translateX(30px);
+}
 .shedule{
     display: flex;
     flex-direction: column;
     padding: 10px;
-
+    gap: 10px;
+    margin-bottom: 100px;
 }
 
 .lesson-list{
@@ -142,6 +237,13 @@ onMounted( async() => {
     color: white;
 }
 
+.now{
+    padding: 2px 4px;
+    background: rgb(245, 93, 38);
+    border-radius: 4px;
+    color: white;
+}
+
 .lesson-name{
     color: #142866;
 }
@@ -159,5 +261,14 @@ onMounted( async() => {
 .lesson-audience{
     color: #142866;
     font-weight: bold;
+}
+
+.inactive{
+    background: #b7b7b74f;
+}
+
+.wrapper{
+    display: flex;
+    gap: 10px;
 }
 </style>

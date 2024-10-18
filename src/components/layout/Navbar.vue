@@ -84,7 +84,7 @@ function markItem(givenItem: navItemsType){
 <style>
 
 nav{
-    background: #52C3F1;
+    background: #142866;;
     padding: 5px;
 }
 svg>path {

@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { User } from '../types/user'
 import { ScheduleWeek } from '../assets/types/enums/ScheduleWeek'
-import { WeekDays } from '../assets/types/enums/WeekDays'
+// import { WeekDays } from '../assets/types/enums/WeekDays'
 const baseUrl = import.meta.env.VITE_BASE
 
 export const useCounterStore = defineStore('counter', {
@@ -77,12 +77,19 @@ export const useCounterStore = defineStore('counter', {
 
       async getScheduleJSON(groupId: number, date: string, scheduleWeek: ScheduleWeek){
         console.log(`https://lms3.sseu.ru/api/v1/schedule-board/by-group?groupId=${groupId}&scheduleWeek=${scheduleWeek}&date=${date}`)
-        const resp = await fetch(`https://lms3.sseu.ru/api/v1/schedule-board/by-group?groupId=${groupId}&scheduleWeek=${scheduleWeek}&date=${date}`)
+        const resp = await fetch(`https://lms3.sseu.ru/api/v1/schedule-board/by-group?groupId=${groupId}&scheduleWeek=${scheduleWeek}&date=${date}`,
+          {
+            headers:{
+              "Authorization":`${localStorage.getItem("token")}`
+            }
+          }
+        )
         const data = await resp.json()
         return data
       },
 
-      async getNDaySchedule(schedule: any, day: WeekDays){
+      async getNDaySchedule(schedule: any, day: string){
+        console.log(schedule)
         let res: any[] = []
         if(day == "SUNDAY")
           return
@@ -105,15 +112,24 @@ export const useCounterStore = defineStore('counter', {
           
           res.push({teacherName:teacherName,disciplineName:disciplineName, audience:audience,lessonType:lessonType, time:item["name"]})
         })
-
+        console.log(res)
         return res
       },
 
-      getTodayDay(){
-        const now = new Date()
+      getNDay(dayIndex: number){
         const weekDaysArr = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
-        const currDay = weekDaysArr[now.getDay()].toUpperCase()
+        const currDay = weekDaysArr[dayIndex].toUpperCase()
         return currDay
+      },
+
+      async getUserTasks(username: string | null){
+        if(username == null) return
+        let res
+        await fetch(`${baseUrl}/tasks/all/${username}`)
+        .then((resp) => resp.json())
+        .then((data) => res = data)
+        console.log(res)
+        return res
       }
 
     },

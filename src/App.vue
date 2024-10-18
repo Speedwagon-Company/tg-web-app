@@ -5,9 +5,9 @@ import Navbar from "./components/layout/Navbar.vue";
 
 // import { useWebApp } from "vue-tg";
 // import { useCounterStore } from "./stores/counterStore";
-import { useRouter } from "vue-router";
+
 // import UserInfo from "./components/UserInfo.vue";
-const router = useRouter()
+
 // const store = useCounterStore()
 // const tg = useWebApp();
 
@@ -28,7 +28,7 @@ onMounted(async() => {
 <template>
   <div  class="app">
 
-    <button @click="router.push('/token')">страница с токеном</button>
+
     <!-- <UserInfo /> -->
     <router-view v-slot="{ Component }">
   <transition name="fade" mode="out-in">
@@ -62,12 +62,12 @@ footer{
 
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity .5s ease;
+  transition: opacity .2s ease;
 }
 
 .fade-enter-from,
 .fade-leave-to {
-  transition: .5s;
+  transition: .2s;
   opacity: 0;
 }
 

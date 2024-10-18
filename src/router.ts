@@ -9,6 +9,10 @@ export default createRouter({
     history:createWebHashHistory(),
     routes: [
         {
+            path:"/",
+            redirect:"/achievements"
+        },
+        {
             path:"/daily",
             component:DailyPage,
 
