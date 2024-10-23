@@ -2,12 +2,12 @@
     <section>
         <p class="text">У вас нет ежедневных заданий :(</p>
         <button @click="router.push('/token')">страница с токеном</button>
-        <ul>
-            <Task progress="30%" :title="task.title" :description="task.description" :max-steps="task.maxSteps"
+        <ul class="task-list">
+            <Task :title="task.title" :description="task.description" :max-steps="task.maxSteps"
                 :completed-steps="task.comoletedSteps" :exp-reward="task.expReward" :gold-reward="task.goldReward"
                 v-for="task in userTasks" />
         </ul>
-        {{ userTasks }}
+        <!-- {{ userTasks }} -->
     </section>
 
 </template>
@@ -35,6 +35,13 @@ onMounted(async () => {
     text-align: center;
     color: black;
     opacity: 0.5;
+}
+
+.task-list{
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px
 }
 
 section {

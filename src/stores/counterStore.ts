@@ -85,11 +85,12 @@ export const useCounterStore = defineStore('counter', {
           }
         )
         const data = await resp.json()
+        console.log("scheduled JSON",data)
         return data
       },
 
       async getNDaySchedule(schedule: any, day: string){
-        console.log(schedule)
+        console.log(day, schedule)
         let res: any[] = []
         if(day == "SUNDAY")
           return
@@ -112,7 +113,7 @@ export const useCounterStore = defineStore('counter', {
           
           res.push({teacherName:teacherName,disciplineName:disciplineName, audience:audience,lessonType:lessonType, time:item["name"]})
         })
-        console.log(res)
+        // console.log(res)
         return res
       },
 
@@ -130,7 +131,13 @@ export const useCounterStore = defineStore('counter', {
         .then((data) => res = data)
         console.log(res)
         return res
-      }
+      },
+
+      addDaysToDate(dateString: Date, daysToAdd: number) {
+        const date = new Date(dateString);
+        date.setDate(date.getDate() + daysToAdd);
+        return date.toISOString().split('T')[0];
+       }
 
     },
   })

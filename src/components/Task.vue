@@ -12,9 +12,9 @@
                         <p>{{ `${props.expReward} exp ${props.goldReward} gold` }}</p>
                     </header>
                     <div class="bar-wrapper">
-                        <p>{{ props.progress }}</p>
+                        <p>{{ `${props.completedSteps == undefined ? 0 : props.completedSteps}/${props.maxSteps}` }}</p>
                         <div class="progress-bar-bg">
-                            <div class="progress-bar" :style="{'width': props.progress}"></div>
+                            <div class="progress-bar" :style="{'width': props.completedSteps == undefined ? 0 : props.completedSteps / props.maxSteps * 100 + '%'} "></div>
                         </div>
                     </div>
                 </div>
@@ -29,7 +29,7 @@ export interface TaskProps {
     completedSteps:number
     goldReward:number
     expReward:number
-    progress:string
+
 }
 
 const props = defineProps<TaskProps>()

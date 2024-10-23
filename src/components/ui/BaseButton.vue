@@ -14,6 +14,7 @@ const props = defineProps<ButtonProps>()
 
 
 .button {
+  text-align: center;
   appearance: none;
   backface-visibility: hidden;
   background-color: #2f80ed;

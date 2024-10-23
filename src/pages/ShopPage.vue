@@ -1,12 +1,27 @@
 <template>
     <div>
-        <p class="text">магазин пустует...</p>
+        {{ items }}
     </div>
 
 </template>
 
 <script lang="ts" setup>
+import { onMounted, ref } from 'vue';
 
+
+const baseUrl = import.meta.env.VITE_BASE
+const items = ref()
+
+async function getAllItems(){
+    let resp = await fetch(`${baseUrl}/items`, {mode:"cors"})
+    let data = await resp.json()
+    items.value = data
+
+}
+
+onMounted(() => {
+    getAllItems()
+})
 </script>
 
 <style scoped>

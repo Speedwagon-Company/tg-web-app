@@ -1,7 +1,7 @@
 <template>
     <div class="shedule">
         <div class="wrapper">
-            <BaseInput @change="changeData" type="date" v-model="date" />
+            <BaseInput @change="onDateInputChange($event.target.value)" type="date" v-model="date" />
             <BaseButton @click="prevDay" >пред. день</BaseButton>
             <BaseButton @click="nextDay" >след. день</BaseButton>
         </div>
@@ -165,10 +165,16 @@ async function changeData(){
     todayInfo.todayName = todayDay.dayName
     todayInfo.day = todayDay.day
     todayInfo.monthName = todayDay.monthName
-    console.log(todayDay)
+
     day.value = await store.getNDaySchedule(data.value, store.getNDay(new Date(date.value).getDay()))
     // day.value = ...day.value
-    console.log(day.value)
+    console.log("changed cal",day.value)
+}
+
+async function onDateInputChange(e: any){
+    date.value = e
+    data.value = await store.getScheduleJSON(504, date.value, ScheduleWeek.CURRENT)
+    await changeData()
 }
 </script>
 
