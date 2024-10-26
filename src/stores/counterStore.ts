@@ -90,14 +90,26 @@ export const useCounterStore = defineStore('counter', {
       },
 
       async getNDaySchedule(schedule: any, day: string){
-        console.log(day, schedule)
-        let res: any[] = []
+        console.log("n day sch",day, schedule)
+        let res: any = {dayInfo:"",schedule:[]}
         if(day == "SUNDAY")
           return
+        
+        schedule.headers.forEach((item: any) => {
+          if(item.value == day)
+            res.dayInfo = item.text
 
-        schedule.body.forEach((item: any) => {
+        })
+        // schedule.headers.shift()
+        console.log(schedule.headers)
+        schedule.body.forEach((item: any, i: number) => {
+          
           if(item[day][0]["workPlan"]["discipline"] == null) return
           if(item[day][0]["subject"][0]["name"] == undefined) return
+          // if(schedule.headers[i].value == "name")
+            // i++
+          console.log("DAAAYS", schedule.headers[i].value, day)
+         
           
           const disciplineName = item[day][0]["workPlan"]["discipline"]["name"]
           let teacherName = item[day][0]["subject"][0]["name"] 
@@ -110,8 +122,8 @@ export const useCounterStore = defineStore('counter', {
 
           if(teacherName == "")
             teacherName = item[day][0]["subject"][0]["replacementTeachers"][0]["fio"]
-          
-          res.push({teacherName:teacherName,disciplineName:disciplineName, audience:audience,lessonType:lessonType, time:item["name"]})
+          res.schedule.push({ teacherName:teacherName,disciplineName:disciplineName, audience:audience,lessonType:lessonType, time:item["name"]  })
+  
         })
         // console.log(res)
         return res
