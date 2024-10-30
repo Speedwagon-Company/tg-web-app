@@ -4,7 +4,7 @@
             <BaseButton @click="prevWeek">Пред. неделя</BaseButton>
             <BaseButton @click="nextWeek">След. неделя</BaseButton>
         </div>
-        <div v-for="day,i in weekDataArr" class="week-shedule">
+        <div v-for="day in weekDataArr" class="week-shedule">
             <h4>{{ day.dayInfo }}</h4>
             <TransitionGroup name="list" tag="ul" :class="'lesson-list'">
                 <li class="lesson-item" v-for="lesson, i in day.schedule" :key="i">
@@ -35,10 +35,7 @@ import { useCounterStore } from '../stores/counterStore';
 import { ScheduleWeek } from '../assets/types/enums/ScheduleWeek';
 import BaseButton from './ui/BaseButton.vue';
 
-let a = [ { "schedule":
- { "teacherName": "Фролочкин А.С.", "disciplineName": "Безопасность жизнедеятельности", "audience": "501н", "lessonType": "Лекции", "time": "08:30" } },
-  { "schedule": { "teacherName": "Фролочкин А.С.", "disciplineName": "Безопасность жизнедеятельности", "audience": "507н", "lessonType": "Практические", 
-  "time": "10:15" }, "dayInfo": "Понедельник 21.10.2024г." } ]
+
 const store = useCounterStore()
 let weekData: any
 const weekDataArr = ref<any>([])
@@ -47,6 +44,8 @@ let week = 1
 
 async function nextWeek() {
     week++
+    if(week == 0)
+        week++
     weekDataArr.value = []
     let tempDate: any
     date.value = getMonday(new Date(date.value)).toLocaleDateString().split(".").reverse().join("-")
@@ -78,24 +77,37 @@ async function nextWeek() {
 
 
 async function prevWeek() {
+    week--
+    if (week == 0)
+        week--
     weekDataArr.value = []
+    let tempDate: any
     date.value = getMonday(new Date(date.value)).toLocaleDateString().split(".").reverse().join("-")
     console.log("DATE", date.value);
-    weekData = await store.getScheduleJSON(504, store.addDaysToDate(date.value, -7), ScheduleWeek.CURRENT);
+    weekData = await store.getScheduleJSON(504, store.addDaysToDate(date.value, 7*week), ScheduleWeek.CURRENT);
     for (let i = 0; i <= 6; i++) {
         if (store.getNDay(i) == "SUNDAY")
             continue
-        console.log("iter")
+        
+        console.log("tempDate before", tempDate)
+        tempDate = date.value
+        tempDate = store.addDaysToDate(date.value, i+1)
+
+        console.log("iter", tempDate, date.value)
         let dayInfo = await date.value.split("-")
         let lastNdayInfo
+
         lastNdayInfo = store.addDaysToDate(new Date(dayInfo.join("-")), i-1).split("-")[2]
-        console.log("added days",dayInfo,store.addDaysToDate(new Date(dayInfo.join("-")), -i+1))
+        console.log("added days",dayInfo, store.addDaysToDate(new Date(dayInfo.join("-")), i-1))
+
         dayInfo[2] = lastNdayInfo
         dayInfo = await dayInfo.join("-")
-        dayInfo = store.addDaysToDate(new Date(dayInfo), -7)
-        await weekDataArr.value.push({ week: await store.getNDaySchedule(weekData, store.getNDay(i)), dayInfo: getNDayInfo(dayInfo) })
+        dayInfo = store.addDaysToDate(new Date(dayInfo), 7)
+
+        await weekDataArr.value.push( await store.getNDaySchedule(weekData, store.getNDay(i)) )
     }
 }
+
 
 
 function getNDayInfo(date: string) {

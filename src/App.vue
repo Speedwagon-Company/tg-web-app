@@ -1,26 +1,25 @@
 <script setup lang="ts">
 // import { Alert } from 'vue-tg';
-import { onMounted } from "vue";
+import { onMounted, ref } from "vue";
 import Navbar from "./components/layout/Navbar.vue";
 
-// import { useWebApp } from "vue-tg";
-// import { useCounterStore } from "./stores/counterStore";
+import { useWebApp } from "vue-tg";
+import { useCounterStore } from "./stores/counterStore";
 
 // import UserInfo from "./components/UserInfo.vue";
 
-// const store = useCounterStore()
-// const tg = useWebApp();
-
-// const data = ref(tg.initDataUnsafe.user?.username)
+const store = useCounterStore()
+const tg = useWebApp();
+const data = ref(tg.initDataUnsafe.user?.username)
 // let second: any
 onMounted(async() => {
 
-  // localStorage.setItem("username", data.value+"")
-  // let user = await store.postOrGetUser(data.value+"")
-  // if(user){
-  //   store.user = user
-   
-  // }
+  localStorage.setItem("username", data.value+"")
+  let user = await store.postOrGetUser(data.value+"")
+  if(user){
+    store.user = user
+    
+  }
   // second = JSON.parse(second)
 })
 </script>
@@ -28,7 +27,7 @@ onMounted(async() => {
 <template>
   <div  class="app">
 
-
+ 
     <!-- <UserInfo /> -->
     <router-view v-slot="{ Component }">
   <transition name="fade" mode="out-in">

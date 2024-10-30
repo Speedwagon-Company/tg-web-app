@@ -28,6 +28,7 @@ const day = ref("")
 const whiteList = new Set(["Вход","Выход","турникет","ауд","501Н,","507Н,","404Н,","504Н,","512Н","412Н,","401Н,","",""])
 for(let i = 1; i <= 512; i++){
     whiteList.add(`${i}Н,`)
+    whiteList.add(`${i}Е`)
 }
 
 async function getData(){
@@ -45,7 +46,7 @@ async function getData(){
         console.log(resp)
         return resp.json()
     }).then((res) => {
-        console.log(res)
+        console.log("NOT formated",res)
        
         data.value = res
         data.value.forEach((item: any) => {

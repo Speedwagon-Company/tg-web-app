@@ -1,11 +1,17 @@
 <template>
-    <Button class="button" :class="props.class"><slot></slot></Button>
+    <button class="button" :class="props.class">
+      <slot></slot>
+      
+      </button>
 </template>
 
 <script lang="ts" setup>
-import Button, { ButtonProps } from '../../ui/shared/Button.vue';
 
-const props = defineProps<ButtonProps>()
+export type BaseButtonProps = {
+  class?:string
+}
+
+const props = defineProps<BaseButtonProps>()
 
 
 </script>

@@ -5,9 +5,9 @@
             <BaseButton @click="prevDay" >пред. день</BaseButton>
             <BaseButton @click="nextDay" >след. день</BaseButton>
         </div>
-        <h4>{{ `${todayInfo.todayName} ${todayInfo.day} ${todayInfo.monthName}` }}</h4>
-        <TransitionGroup name="list" tag="ul" :class="'lesson-list'" >
-            <li class="lesson-item" v-for="lesson,i in day" :key="i" :class="{'inactive': isLessonInactive(lesson.time, todayInfo.day)}">
+        <h4 v-if="day">{{ day.dayInfo }}</h4>
+        <TransitionGroup name="list" tag="ul" :class="'lesson-list'" v-if="day">
+            <li class="lesson-item" v-for="lesson,i in day.schedule" :key="i" :class="{'inactive': isLessonInactive(lesson.time, todayInfo.day)}">
                 <div class="lesson-time">
                     <span class="time">{{ lesson.time }}</span>
                     <span class="time">{{ getEndLessonTime(lesson.time) }}</span>

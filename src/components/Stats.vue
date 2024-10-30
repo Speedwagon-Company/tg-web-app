@@ -21,6 +21,8 @@ import CoinIcon from './icons/CoinIcon.vue';
 import { useCounterStore } from '../stores/counterStore';
 
 const store = useCounterStore()
+
+
 </script>
 
 <style scoped>

@@ -22,13 +22,13 @@ export const useCounterStore = defineStore('counter', {
         let res
         const data = {
           "username": username,
-          "join_date": `${day}-${month}-${year}`,
-          "coins": 0,
+          "joinDate": `${day}-${month}-${year}`,
+          "coins": 1,
           "health": 100,
-          "exp": 0,
+          "exp": 1,
           "lvl": 1,
-          "role_id": 1,
-          "avatar_url": "none"
+          "role": 1,
+          "avatarUrl": "none"
         }
         await fetch(`${baseUrl}/users`,
           {

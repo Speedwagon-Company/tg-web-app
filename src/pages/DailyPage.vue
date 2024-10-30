@@ -7,6 +7,11 @@
                 :completed-steps="task.comoletedSteps" :exp-reward="task.expReward" :gold-reward="task.goldReward"
                 v-for="task in userTasks" />
         </ul>
+        <!-- <div class="char">
+            <span class="skin"></span>
+            <span class="armor"></span>
+            <span class="head"></span>
+        </div> -->
         <!-- {{ userTasks }} -->
     </section>
 
@@ -31,6 +36,27 @@ onMounted(async () => {
 
 
 <style scoped>
+
+.char{
+    width: 90px;
+    height: 90px;
+    position: relative;
+}
+
+.skin{
+    position: absolute;
+    width: 90px;
+    height: 90px;
+    background-image: url("/skin.png");
+}
+
+.armor{
+    position: absolute;
+    width: 90px;
+    height: 90px;
+    background-image: url("/armor.png");
+}
+
 .text {
     text-align: center;
     color: black;
