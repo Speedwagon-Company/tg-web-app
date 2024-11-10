@@ -6,7 +6,7 @@
         <div class="modal">
             <div class="modal-header">
                 <CoinIcon fill="#FEBD5F" />
-                <p>{{ item.cost }}</p>
+                <p v-show="store.user">{{ store.user.coins }}</p>
             </div>
             <div class="modal-main">
                 <div class="modal-img">
@@ -26,21 +26,27 @@
 
 <script lang="ts" setup>
 import { Item } from '../assets/types/Item';
-// import { useCounterStore } from '../stores/counterStore';
+import { useCounterStore } from '../stores/counterStore';
 import CoinIcon from './icons/CoinIcon.vue';
 import BaseButton from './ui/BaseButton.vue';
+import 'vue-toast-notification/dist/theme-sugar.css';
+import {useToast} from 'vue-toast-notification';
+
 
 export type ItemModalProps = {
     item:Item
 }
 
+const $toast = useToast();
 const baseUrl = import.meta.env.VITE_BASE
-// const store = useCounterStore()
+const store = useCounterStore()
 const props = defineProps<ItemModalProps>()
 const item = props.item
 
 
 async function buyItem() {
+    if(store.user.coins < item.cost)
+        $toast.error("У вас недостаточно средств", {position:"top"})
     console.log(JSON.stringify({item:item,username:localStorage.getItem("username")}))
     let resp = await fetch(`${baseUrl}/inventory/buy-item`,{
         method:"POST",
@@ -50,6 +56,11 @@ async function buyItem() {
         },
         body:JSON.stringify({item:item,username:localStorage.getItem("username")})
     })
+    if(resp.status != 200){
+        $toast.error("Произошла ошибка", {position:"top"})
+        return
+    }
+    $toast.success("Вы успешно купили предмет", {position:"top"})
     let data = await resp.json()
     console.log(data)
 }
@@ -85,6 +96,7 @@ async function buyItem() {
 
 .modal-img{
     margin-left: -25px;
+    text-align: center;
 }
 
 .modal-main{
@@ -118,6 +130,10 @@ async function buyItem() {
 
 .item-desc{
     color: #b0afb4;
+    text-align: center;
+}
+
+.item-cost{
     text-align: center;
 }
 </style>

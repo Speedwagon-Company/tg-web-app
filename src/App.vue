@@ -48,6 +48,10 @@ footer{
   width: 100%;
 }
 
+.v-toast__text{
+    color: white;
+}
+
 .app{
   height: 100svh;
 }

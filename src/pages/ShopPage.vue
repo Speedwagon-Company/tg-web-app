@@ -10,7 +10,9 @@
                 </div>
             </li>
         </ul>
-        <ItemModal v-if="selectedItem" @close-modal="(n) => selectedItem = n" :item="selectedItem"/>
+        <Transition name="fade">
+            <ItemModal v-if="selectedItem " @close-modal="(n) => selectedItem = n" :item="selectedItem"/>
+        </Transition>
     </section>
 
 </template>
@@ -18,7 +20,6 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue';
 import ItemModal from '../components/ItemModal.vue';
-
 
 const baseUrl = import.meta.env.VITE_BASE
 const items = ref()
@@ -36,6 +37,24 @@ onMounted(() => {
 </script>
 
 <style scoped>
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity .2s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  transition: .2s;
+  opacity: 0;
+}
+
+.fade-enter-to,
+.fade-leave-from {
+  opacity: 1;
+  transition: 0.2s;
+}
+
 
 .shop{
     padding: 10px;

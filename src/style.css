@@ -12,3 +12,12 @@ body{
     list-style: none;
     color: black;
 }
+
+.v-toast__text{
+    color: white;
+    padding: 15px !important;
+}
+
+.v-toast__item{
+    min-height: auto !important;
+}

@@ -1,7 +1,7 @@
 <template>
     <div class="shedule">
         <div class="wrapper">
-            <BaseInput @change="onDateInputChange($event.target.value)" type="date" v-model="date" />
+            <BaseInput @change="onDateInputChange($event.target.value)" :value="date" type="date" v-model="date" />
             <BaseButton @click="prevDay" >пред. день</BaseButton>
             <BaseButton @click="nextDay" >след. день</BaseButton>
         </div>

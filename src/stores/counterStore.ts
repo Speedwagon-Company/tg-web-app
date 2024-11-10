@@ -41,7 +41,7 @@ export const useCounterStore = defineStore('counter', {
           }
         ).then((resp) => resp.json())
         .then((data) => res = data)
-        localStorage.setItem("username", username)
+        // localStorage.setItem("username", "test")
         return res
       },
 

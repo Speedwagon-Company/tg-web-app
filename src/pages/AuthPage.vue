@@ -24,7 +24,10 @@
         {{store.user}}
 
         <h4>Инвентарь</h4>
-        {{ inventory }}
+       
+        <!-- {{ inventories }} -->
+
+        
     </div>
 </template>
 
@@ -33,11 +36,11 @@ import { onMounted, ref } from 'vue';
 import BaseButton from '../components/ui/BaseButton.vue';
 import { useCounterStore } from '../stores/counterStore';
 
-const baseUrl = import.meta.env.VITE_BASE
+// const baseUrl = import.meta.env.VITE_BASE
 const token = ref("")
 const username = ref("")
-const inventory = ref()
 // const localStor = ref({...localStorage})
+
 const store = useCounterStore()
 function saveToken(){
     console.log(token.value)
@@ -52,20 +55,15 @@ function saveUsername(){
     localStorage.setItem("username", username.value)
 }
 
-async function getInventory(){
-    const resp = await fetch(`${baseUrl}/inventory/get-inventory/${store.user.id}`, {
-        mode:"cors"
-    })
-    console.log(resp)
-    const data = await resp.json()
-    console.log(data)
-    inventory.value = data
-}
+
+
+
+
+
 
 const myUser = ref()
 onMounted(() => {
     myUser.value = store.user
-    getInventory()
 })
 </script>
 
@@ -74,4 +72,7 @@ onMounted(() => {
     min-width: 300px;
     max-width: 300px;
 }
+
+
+
 </style> 

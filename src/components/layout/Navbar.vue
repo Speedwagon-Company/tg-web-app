@@ -35,8 +35,15 @@ const navItems= ref([
         icon:markRaw(DailyIcon),
         text:"Дейлики",
         href:"/daily",
-        active: true,
-        opacity:1
+        active: false,
+        opacity:0.5
+    },
+    {
+        icon:markRaw(DailyIcon),
+        text:"Персонаж",
+        href:"/character",
+        active:false,
+        opacity:0.5
     },
     {
         icon:markRaw(ShopIcon),
@@ -56,8 +63,8 @@ const navItems= ref([
         icon:markRaw(AchievementIcon),
         text:"Расписание",
         href:"/achievements",
-        active: false,
-        opacity:0.5
+        active: true,
+        opacity:1
     }
 ])
 

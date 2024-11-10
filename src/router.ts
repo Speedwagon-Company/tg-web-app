@@ -4,6 +4,8 @@ import AchievementPage from "./pages/AchievementPage.vue";
 import ShopPage from "./pages/ShopPage.vue";
 import LeaderboardPage from "./pages/LeaderboardPage.vue";
 import AuthPage from "./pages/AuthPage.vue";
+import CharPage from "./pages/CharPage.vue";
+import InventoryPage from "./pages/InventoryPage.vue";
 
 export default createRouter({
     history:createWebHashHistory(),
@@ -32,6 +34,14 @@ export default createRouter({
         {
             path:"/token",
             component:AuthPage
+        },
+        {
+            path:"/character",
+            component:CharPage
+        },
+        {
+            path:"/character/inventory",
+            component:InventoryPage
         }
     ]
 })

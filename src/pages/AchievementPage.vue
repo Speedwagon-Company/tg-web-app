@@ -8,8 +8,14 @@
                 <p>На неделю</p>
             </div>
         </div>
-        <TodaySchedule v-if="activeTab == 'today'"/>
-         <WeekSchedule v-if="activeTab == 'week'" />
+        <Transition name="fade">
+            <TodaySchedule v-show="activeTab == 'today'"/>
+
+        </Transition>
+        <Transition name="fade">
+            <WeekSchedule v-show="activeTab == 'week'" />
+
+        </Transition>
     </div>
 
 </template>
@@ -25,6 +31,22 @@ const activeTab = ref("today")
 </script>
 
 <style scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity .2s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  transition: .2s;
+  opacity: 0;
+}
+
+.fade-enter-to,
+.fade-leave-from {
+  opacity: 1;
+  transition: 1s;
+}
 
 .text{
     text-align: center;

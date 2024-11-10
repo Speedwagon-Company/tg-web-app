@@ -5,6 +5,7 @@ export type BaseInputProps = {
     class?:string
     placeholder?:string
     modelValue?:string
+    value?:any
     type:string
 }
 
@@ -32,7 +33,7 @@ const updateValue = (event: Event) => {
         class="input" 
         :class="props.class"
         :placeholder="props.placeholder"
-        :value="inputValue" 
+        :value="props.value" 
         @input="updateValue"/>
 </template>
 
