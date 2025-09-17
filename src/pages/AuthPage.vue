@@ -15,6 +15,7 @@
 {{ item }} 
             </li>
         </ul> -->
+        <h4>tg info: {{ data }}</h4>
         <h4>Пользователь</h4>
         <!-- <ul>
             <li v-for="item in myUser">
@@ -35,7 +36,11 @@
 import { onMounted, ref } from 'vue';
 import BaseButton from '../components/ui/BaseButton.vue';
 import { useCounterStore } from '../stores/counterStore';
+import { useMiniApp } from 'vue-tg';
 
+// const user = initData.user()?.username
+const tg = useMiniApp();
+const data = ref(tg.initDataUnsafe.user?.username)
 // const baseUrl = import.meta.env.VITE_BASE
 const token = ref("")
 const username = ref("")
@@ -63,6 +68,8 @@ function saveUsername(){
 
 const myUser = ref()
 onMounted(() => {
+    // console.log(initData.user, initData.user())
+    // console.log(user)
     myUser.value = store.user
 })
 </script>

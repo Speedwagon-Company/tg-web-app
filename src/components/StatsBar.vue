@@ -40,7 +40,7 @@ span{
     width: 100px;
     height: 10px;
     background-color: rgb(226, 223, 223);
-    border-radius: 12px;
+    border-radius: 2px;
 }
 
 .progress-count{
@@ -56,6 +56,6 @@ span{
     background-color: #FF5F61;
     width: 100%;
     height: 100%;
-    border-radius: 12px;
+    border-radius: 2px;
 }
 </style>

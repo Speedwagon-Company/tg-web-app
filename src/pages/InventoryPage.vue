@@ -1,20 +1,21 @@
 <template>
-    <section>
+    <section class="inventory">
         <ul class="inventory-list">
-            <li v-for="inventory in inventories" class="inventory-item">
+            <li v-for="inventory,i in inventories" class="inventory-item">
                 <div class="inventory-image">
                     <img :src="inventory.item.url" alt="">
                 </div>
                 <h4>{{ inventory.item.name }}</h4>
                 <div>
-                    <!-- {{ inventory.equipped }} -->
-                    <BaseButton @click="inventory.equipped = true" v-if="!inventory.equipped">Надеть</BaseButton>
-                    <BaseButton @click="inventory.equipped = false" v-else>Снять</BaseButton>
+                    <BaseButton @click="changeEquippedBtn(true, i)" v-if="!inventory.equipped">Надеть</BaseButton>
+                    <BaseButton @click="changeEquippedBtn(false, i)" v-else>Снять</BaseButton>
                 </div>
             </li>
         </ul>
-        <BaseButton @click="changeEquipped">сохранить</BaseButton>
-        <SavePopup v-if="popup" @change-data="(v) => handlePopup(v)" />
+        <!-- <BaseButton @click="changeEquipped">сохранить</BaseButton> -->
+         <Transition name="fade">
+             <SavePopup v-if="popup" @change-data="(v: any) => handlePopup(v)" />
+         </Transition>
     </section>
 </template>
 
@@ -30,16 +31,28 @@ const baseUrl = import.meta.env.VITE_BASE
 let oldInventories: any
 const inventories = ref()
 const popup = ref(false)
+function getChanges(){
+    let res = []
+    console.log(oldInventories, inventories.value)
+    for(let i = 0; i < inventories.value.length; i++){
+        if(oldInventories[i].equipped != inventories.value[i].equipped)
+            res.push(inventories.value[i])
+    }
+    return res
+}
 
-// function changeEquippedBtn(eqq: any, v: boolean){
-//     eqq = v
-//     if(JSON.stringify(oldInventories) === JSON.stringify(inventories))
-//         popup.value = false
-//     else
-//         popup.value = true
-// }
+function changeEquippedBtn(v: boolean, index: number){
+    inventories.value[index].equipped = v
+    console.log("changes", getChanges().length)
+    if(getChanges().length > 0)
+        popup.value = true
+    else
+        popup.value = false
+    
+}
 
 function handlePopup(v: string){
+    console.log("emit", v)
     if(v == "reset")
         resetData()
     else
@@ -50,6 +63,7 @@ function handlePopup(v: string){
 function resetData(){
     console.log(oldInventories)
     inventories.value = oldInventories
+    popup.value = false
     console.log(inventories.value)
 }
 
@@ -68,14 +82,16 @@ async function getInventory(){
 }
 
 async function changeEquipped(){
-    console.log(JSON.stringify(inventories.value))
+    // console.log(JSON.stringify(inventories.value))
+    popup.value = false
+    console.log(getChanges())
     const resp = await fetch(`${baseUrl}/inventory/change-equipped/${localStorage.getItem("username")}`, {
         method:"PUT",
         mode:"cors",
         headers:{
             "content-type":"application/json"
         },
-        body:JSON.stringify(inventories.value)
+        body:JSON.stringify(getChanges())
     })
     if(resp.status != 200){
         $toast.error("Произошла ошибка", {position:"top"})
@@ -84,6 +100,7 @@ async function changeEquipped(){
     $toast.success("Успешно", {position:"top"})
     console.log(resp)
     const data = await resp.json()
+    console.log(oldInventories)
     console.log(data)
 }
 
@@ -94,7 +111,31 @@ onMounted(() => {
 
 </script>
 
+
 <style scoped>
+
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity .2s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  transition: .2s;
+  opacity: 0;
+}
+
+.fade-enter-to,
+.fade-leave-from {
+  opacity: 1;
+  transition: 1s;
+}
+
+.inventory{
+    margin-bottom: 100px;
+}
+
 .inventory-item{
     display: flex;
     flex-direction: column;

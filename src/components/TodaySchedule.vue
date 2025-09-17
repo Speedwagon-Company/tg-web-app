@@ -1,5 +1,6 @@
 <template>
     <div class="shedule">
+        <ReportModal :lesson="modalData.lesson" :teacher="modalData.teacher" :time="modalData.time" :date="''" />
         <div class="wrapper">
             <BaseInput @change="onDateInputChange($event.target.value)" :value="date" type="date" v-model="date" />
             <BaseButton @click="prevDay" >пред. день</BaseButton>
@@ -21,6 +22,9 @@
                         </span>
                         <span>{{ lesson.teacherName }}</span>
                     </div>
+                    <div class="icon" @click="handleReportModal(lesson)">
+                        <FlagIcon :fill="'None'" />
+                    </div>
                 </div>
             </li>
         </TransitionGroup>
@@ -34,11 +38,29 @@ import { useCounterStore } from '../stores/counterStore';
 import { ScheduleWeek } from '../assets/types/enums/ScheduleWeek';
 import BaseInput from './ui/BaseInput.vue';
 import BaseButton from './ui/BaseButton.vue';
-// import { WeekDays } from '../assets/types/enums/WeekDays';
+import FlagIcon from './icons/FlagIcon.vue';
+// import { WeekDays } from '../assets/types/enums/WeekDays';;
+import ReportModal from './ReportModal.vue';
 
 const store = useCounterStore()
 const day = ref();
 const date = ref()
+const modalData = ref<ModalData>({})
+interface ModalData {
+  lesson?: any; 
+  teacher?: any; 
+  time?: string;  
+  date?: string
+}
+function handleReportModal(lessonInfo: any) {
+    store.reportModal = true
+    modalData.value = {
+        time:lessonInfo.time,
+        teacher:lessonInfo.teacherName,
+        date:"",
+        lesson:lessonInfo.disciplineName
+    }
+}
 
 function matchInterval(start: string, end: string, date: Date): boolean{
     let currDate = new Date().getDate()
@@ -219,6 +241,7 @@ async function onDateInputChange(e: any){
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    position: relative;
     gap: 10px;
     padding: 10px;
     width: 100%;
@@ -276,5 +299,13 @@ async function onDateInputChange(e: any){
 .wrapper{
     display: flex;
     gap: 10px;
+}
+
+.icon {
+    
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    width: 30px;
 }
 </style>

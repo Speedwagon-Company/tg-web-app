@@ -1,6 +1,6 @@
 <template>
     <section>
-        <p class="text" v-if="userTasks">У вас нет ежедневных заданий :(</p>
+        <!-- <p class="text" v-if="userTasks">У вас нет ежедневных заданий :(</p> -->
         <button @click="router.push('/token')">страница с токеном</button>
         <ul class="task-list">
             <Task :title="task.title" :description="task.description" :max-steps="task.maxSteps"

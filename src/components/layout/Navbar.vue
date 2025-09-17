@@ -12,10 +12,10 @@
 </template>
 
 <script lang="ts" setup>
-import AchievementIcon from '../icons/AchievementIcon.vue';
 import DailyIcon from '../icons/DailyIcon.vue';
 import LeaderboardIcon from '../icons/LeaderboardIcon.vue';
-import ShopIcon from '../icons/ShopIcon.vue';
+// import ShopIcon from '../icons/ShopIcon.vue';
+// import CharacterIcon from '../icons/CharacterIcon.vue';
 import {  ref, markRaw } from 'vue';
 import { useRouter } from 'vue-router';
 
@@ -38,29 +38,29 @@ const navItems= ref([
         active: false,
         opacity:0.5
     },
-    {
-        icon:markRaw(DailyIcon),
-        text:"Персонаж",
-        href:"/character",
-        active:false,
-        opacity:0.5
-    },
-    {
-        icon:markRaw(ShopIcon),
-        text:"Магазин",
-        href:"/shop",
-        active: false,
-        opacity:0.5
-    },
+    // {
+    //     icon:markRaw(CharacterIcon),
+    //     text:"Персонаж",
+    //     href:"/character",
+    //     active:false,
+    //     opacity:0.5
+    // },
+    // {
+    //     icon:markRaw(ShopIcon),
+    //     text:"Магазин",
+    //     href:"/shop",
+    //     active: false,
+    //     opacity:0.5
+    // },
     {
         icon:markRaw(LeaderboardIcon),
-        text:"Лидерборд",
+        text:"Посещаемость",
         href:"/leaderboard",
         active: false,
         opacity:0.5
     },
     {
-        icon:markRaw(AchievementIcon),
+        icon:markRaw(DailyIcon),
         text:"Расписание",
         href:"/achievements",
         active: true,

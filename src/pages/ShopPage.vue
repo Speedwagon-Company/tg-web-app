@@ -11,7 +11,7 @@
             </li>
         </ul>
         <Transition name="fade">
-            <ItemModal v-if="selectedItem " @close-modal="(n) => selectedItem = n" :item="selectedItem"/>
+            <ItemModal v-if="selectedItem " @close-modal="(n: any) => selectedItem = n" :item="selectedItem"/>
         </Transition>
     </section>
 
@@ -85,6 +85,8 @@ onMounted(() => {
     /* border-top: 1px solid black; */
     padding: 3px 0;
     background: #f5f5f5;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
 }
 
 .item-img{
@@ -94,6 +96,8 @@ onMounted(() => {
 .item-img-wrapper{
     /* border-bottom: 1px solid black; */
     background: #f9f9f9;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
 }
 .item-img-wrapper > img{
     margin-left: -10px;

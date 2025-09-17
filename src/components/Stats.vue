@@ -1,6 +1,5 @@
 <template>
     <div>
-        вцфволцфлдвофцдф
         <div class="stat-bars">
             <StatsBar :progress="store.user.health+''" color="#FF5F61" :icon="HeartIcon" />
             <StatsBar :progress="store.user.exp+''" color="#FEBD5F" :icon="StarFourIcon" />

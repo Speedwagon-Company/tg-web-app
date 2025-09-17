@@ -5,8 +5,9 @@ import { VueTelegramPlugin } from 'vue-tg'
 import router from './router'
 import { createPinia } from 'pinia'
 import ToastPlugin from 'vue-toast-notification';
+// import { init } from '@telegram-apps/sdk-vue';
 import 'vue-toast-notification/dist/theme-bootstrap.css';
-
+// init()
 const pinia = createPinia()
 const app = createApp(App)
 

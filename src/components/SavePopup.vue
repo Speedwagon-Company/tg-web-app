@@ -12,10 +12,15 @@
 <style scoped>
 
 .bg{
+    position: fixed;
+    bottom: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
     display: flex;
     justify-content: space-between;
     background-color: #111214;
-    margin: 10px;
+    /* margin: 10px; */
     padding: 10px;
     border-radius: 4px;
     /* margin-bottom: ; */

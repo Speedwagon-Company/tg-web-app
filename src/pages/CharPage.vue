@@ -1,10 +1,9 @@
 <template>
-    <section>
+    <section class="char-page">
         <!-- {{ inventory }} -->
         <!-- <div v-for="item,i in inventory" :key="i">
             <div>{{ item }}</div>
         </div> -->
-        <button @click="$toast.success('ogo', {position:'top', duration:9999999})">hello</button>
         <div class="wrapper">
             <div class="char">
                 <div v-for="item in items">
@@ -26,16 +25,13 @@ import { onMounted, ref } from 'vue';
 import BaseButton from '../components/ui/BaseButton.vue';
 import { useRouter } from 'vue-router';
 import Stats from '../components/Stats.vue';
-import 'vue-toast-notification/dist/theme-sugar.css';
+
 
 const baseUrl = import.meta.env.VITE_BASE
 const inventory = ref()
 const router = useRouter()
 const items: any = ref([])
-import {useToast} from 'vue-toast-notification';
-import 'vue-toast-notification/dist/theme-sugar.css';
 
-const $toast = useToast();
 async function getCharEquippedItems(){
     const resp = await fetch(`${baseUrl}/inventory/equipped/${localStorage.getItem("username")}`, { mode:"cors"})
     const data = await resp.json()
@@ -52,6 +48,10 @@ onMounted(async () => {
 </script>
 
 <style scoped>
+
+.char-page{
+    margin-top: 50px;
+}
 
 .inventory-btn{
     display: flex;

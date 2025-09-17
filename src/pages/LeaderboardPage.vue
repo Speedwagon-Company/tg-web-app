@@ -5,6 +5,7 @@
                 <BaseInput @change="getData" v-model="date" :type="'date'"/>
                 <!-- <BaseButton @click="getData">Получить информацию</BaseButton> -->
             </div>
+            <!-- {{ data }} -->
             <TransitionGroup name="list" tag="ul" :class="'lessons-list'">
                 <li class="lessons-item" v-for="item,i in data" :key="i">
                     <div class="lessons-item-wrapper" v-if="item.description">
@@ -25,27 +26,36 @@ import BaseInput from '../components/ui/BaseInput.vue';
 const data = ref()
 const date = ref("")
 const day = ref("")
-const whiteList = new Set(["Вход","Выход","турникет","ауд","501Н,","507Н,","404Н,","504Н,","512Н","412Н,","401Н,","",""])
-for(let i = 1; i <= 512; i++){
-    whiteList.add(`${i}Н,`)
-    whiteList.add(`${i}Е`)
+const whiteList = new Set(["Вход","Выход","турникет","ауд","501Н,","507Н,","404Н,","504Н,","512Н","412Н,","401Н,","главн","корп,", "П"])
+for(let i = 1; i <= 5; i++){
+    for(let j = 0; j < 20; j++) {
+        let p: any = j
+        if(p < 10)
+            p = "0" + p
+        whiteList.add(`${i.toString() + p}Н,`)
+        whiteList.add(`${i.toString() + p}Е,`)
+        whiteList.add(`${i.toString() + p}Д,`)
+    }
 }
 
 async function getData(){
+    
 
     day.value.padStart(2,"0")
-    await fetch(`https://lms3.sseu.ru/api/v1/event-orion/by-student-id-and-date/8945?date=${date.value}`,
+    await fetch(`https://brso.sseu.ru/api/v1/event-orion/by-student-id-and-date/8945?date=${date.value}`,
         {
             method:"GET",
             mode:"cors",
             headers:{
-                "Authorization":`${localStorage.getItem("token")}`
-            }
+                "Authorization": localStorage.getItem("token") || ""
+            },
+            "referrer": "https://brso.sseu.ru/info-visit-student",
         }
     ).then((resp) => {
         console.log(resp)
         return resp.json()
     }).then((res) => {
+        console.log(whiteList.has("509Д"))
         console.log("NOT formated",res)
        
         data.value = res
@@ -74,6 +84,7 @@ function formatDataDescription(item: any){
 
         let splitedDesc = item.split(" ")
         splitedDesc.forEach((item: any) => {
+            console.log(item, whiteList.has(item))
             if(whiteList.has(item)){
                 res.push(item)
             }
@@ -119,6 +130,7 @@ onMounted(() => {
 .lessons-list{
     display: flex;
     flex-direction: column;
+    margin-top: 20px;
     gap: 10px;
 }
 
